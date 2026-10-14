@@ -29,7 +29,9 @@ Cable Network Data Lakehouse is an AI-powered cable/ISP network monitoring and a
 
 ## Demo
 
-No Reprise/recorded demo is linked yet. Run it locally: `docker compose up -d`, then open the frontend at `http://localhost:8208` for the live global map, NOC dashboard, digital-twin simulation, and executive dashboard views described below.
+Reprise demo: https://app.getreprise.com/present/3nvwMVX 
+
+Run it locally: `docker compose up -d`, then open the frontend at `http://localhost:8208` for the live global map, NOC dashboard, digital-twin simulation, and executive dashboard views described below.
 
 ## Use Case
 

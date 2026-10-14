@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](application/backend/requirements.txt)
 [![Cloudera Blueprint](https://img.shields.io/badge/Cloudera-Blueprint-f96702.svg)](METADATA.yaml)
+[![Author-Michael Schuler](https://img.shields.io/badge/Author-Michael%20Schuler-555555)]()
 [![Stars](https://img.shields.io/github/stars/cloudera-applied-ai/AI_Blueprint_Network-Lakehouse-for-Agentic-Operations?logo=github&cacheSeconds=300)](https://github.com/cloudera-applied-ai/AI_Blueprint_Network-Lakehouse-for-Agentic-Operations/stargazers)
 [![Forks](https://img.shields.io/github/forks/cloudera-applied-ai/AI_Blueprint_Network-Lakehouse-for-Agentic-Operations?logo=github&cacheSeconds=300)](https://github.com/cloudera-applied-ai/AI_Blueprint_Network-Lakehouse-for-Agentic-Operations/network/members)
 

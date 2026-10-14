@@ -1,0 +1,54 @@
+# Cloudera Blueprint catalog metadata
+# Populate fields used by the master blueprint website and internal catalog.
+
+# --- Identity ---
+name: "Network Lakehouse for Agentic Operations"
+slug: "network-lakehouse-agentic-operations"                # URL-safe repo / catalog identifier
+description: "AI-powered cable/ISP network monitoring platform with autonomous self-healing, simulating a full-scale NOC across 42 headends, 181 hubs, 7,240+ fiber nodes, and ~1.8M customers."
+reprise_link: ""                                     # TODO: no reprise/demo link found in repo
+
+# --- Classification (website filters) ---
+catalog_classification:
+  - Launchable (AMP)                                 # Options: Enterprise Blueprint | Research | Launchable (AMP) | Developer Example
+launchable: true                                      # true | false
+lifecycle_status: Active                              # e.g., Active | Deprecated
+
+# --- Industry & alignment ---
+industry: Telecom                                     # e.g., General | Telecom | Financial Services | Healthcare & Life Sciences | Retail | Media | Physical AI & Robotics
+industry_alignment: "Vertical"                        # Horizontal | Vertical
+target_vertical: "Cable / ISP Network Operations"     # Optional finer-grained vertical
+
+# --- Tags (website search & browse) ---
+tags:
+  - telecom
+  - cable
+  - network-monitoring
+  - noc
+  - self-healing
+  - anomaly-detection
+  - digital-twin
+  - agentic-ai
+  - capacity-planning
+  - postgresql
+
+# --- Relationships ---
+product_mapping:                                      # Cloudera products used
+  - Cloudera Machine Learning
+model_dependencies:                                   # Models, embeddings, or external AI services, if any.
+  - anthropic.claude                                  # Claude AI integration for anomaly detection, root-cause analysis, and agentic capacity planning
+
+# --- Provenance ---
+publisher: cloudera                                   # cloudera | partner-name
+source: Internal                                      # Internal | Partner | NVIDIA Adaptation | Customer
+
+# --- Repository & assets ---
+public_github_link: "https://github.com/cloudera-applied-ai/AI_Blueprint_Network-Lakehouse-for-Agentic-Operations"
+#private_github_link: ""                              # If applicable, original repo during development
+
+# --- Ownership ---
+maintainer_name: "Michael Schuler"
+
+# --- Dates ---
+date_created: "2026-02-10"
+date_updated: "2026-09-01"
+published_date: "2026-09-01"                          # Published date / last modified

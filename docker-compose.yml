@@ -1,0 +1,97 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: cable-network-postgres
+    restart: unless-stopped
+    shm_size: 256m
+    environment:
+      POSTGRES_USER: cable_user
+      POSTGRES_PASSWORD: cable_secure_pass_2024
+      POSTGRES_DB: cable_network
+    command:
+      - postgres
+      - -c
+      - listen_addresses=*
+    ports:
+      - "${HOST_DB_PORT:-5434}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - ndl
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U cable_user -d cable_network
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./application/backend
+      dockerfile: Dockerfile
+    container_name: cable-network-backend
+    restart: unless-stopped
+    ports:
+      - "${HOST_BACKEND_PORT:-8008}:8000"
+    environment:
+      BACKEND_PORT: 8000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: cable_user
+      DB_PASSWORD: cable_secure_pass_2024
+      DB_NAME: cable_network
+      API_KEY: ${API_KEY:-dev-api-key-change-me}
+      WORKERS: ${WORKERS:-1}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL:-}
+      # Data volume knobs (see application/.env.example). Unset = backend defaults.
+      KPI_GENERATION_INTERVAL_SECONDS: ${KPI_GENERATION_INTERVAL_SECONDS:-300}
+      KPI_CYCLE_SECONDS: ${KPI_CYCLE_SECONDS:-30}
+      NODES_PER_HUB: ${NODES_PER_HUB:-0}
+      HISTORICAL_BACKFILL_HOURS: ${HISTORICAL_BACKFILL_HOURS:-2}
+      RETENTION_RAW_HOURS: ${RETENTION_RAW_HOURS:-2}
+      RETENTION_1MIN_HOURS: ${RETENTION_1MIN_HOURS:-6}
+      RETENTION_5MIN_HOURS: ${RETENTION_5MIN_HOURS:-12}
+      RETENTION_HOURLY_DAYS: ${RETENTION_HOURLY_DAYS:-3}
+      RETENTION_DAILY_DAYS: ${RETENTION_DAILY_DAYS:-30}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ndl
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -fsS
+        - http://localhost:8000/health
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  frontend:
+    build:
+      context: ./application
+      dockerfile: Dockerfile.frontend
+      args:
+        VITE_API_KEY: ${API_KEY:-dev-api-key-change-me}
+    container_name: cable-network-frontend
+    restart: unless-stopped
+    ports:
+      - "${HOST_FRONTEND_PORT:-8208}:8100"
+    environment:
+      FRONTEND_PORT: 8100
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - ndl
+
+networks:
+  ndl:
+    driver: bridge
+
+volumes:
+  pgdata:

@@ -1,0 +1,118 @@
+name: Cable Network Data Lakehouse
+description: |
+  AI-powered cable/ISP network monitoring platform with autonomous self-healing.
+  Simulates a full-scale NOC with 42 headends, 181 hubs, 7,240+ fiber nodes,
+  ~29K amplifiers, and ~1.8M customers across 40 service areas (20 US + 20
+  international). Features real-time KPI metrics, anomaly detection, multi-layer
+  network maps, and automated remediation via Claude AI.
+author: Cloudera
+specification_version: 1.0
+prototype_version: 2.0
+date: "2026-04-04"
+
+runtimes:
+  - editor: JupyterLab
+    kernel: Python 3.12
+    edition: Standard
+
+# Setup steps run as JOBS, not sessions. As of ML Runtimes 2025.01.1, AMP
+# run_session tasks are unreliable with the JupyterLab runtime; Cloudera's
+# guidance is to execute automated setup via create_job + run_job (or switch the
+# editor to PBJ Workbench). See docs.cloudera.com AMP project spec + the
+# 2025.01.1 runtime release notes.
+tasks:
+  - type: create_job
+    name: Install Dependencies
+    entity_label: install_deps
+    script: cml/install_deps.py
+    arguments: None
+    kernel: python3
+    short_summary: Create the job that installs Python and Node.js dependencies.
+    cpu: 2
+    memory: 4
+    timeout: 60
+
+  - type: run_job
+    entity_label: install_deps
+    short_summary: Install Python and Node.js dependencies.
+    long_summary: >
+      Installs Python backend packages from requirements.txt and
+      Node.js frontend packages via npm install.
+
+  - type: create_job
+    name: Build Frontend
+    entity_label: build_frontend
+    script: cml/build_frontend.py
+    arguments: None
+    kernel: python3
+    short_summary: Create the job that builds the React frontend.
+    cpu: 4
+    memory: 8
+    timeout: 30
+
+  - type: run_job
+    entity_label: build_frontend
+    short_summary: Build React frontend for production.
+    long_summary: >
+      Runs TypeScript compilation and Vite production build to generate
+      optimized static assets in the dist/ directory.
+
+  - type: create_job
+    name: Initialize Database
+    entity_label: init_database
+    script: cml/init_database.py
+    arguments: None
+    kernel: python3
+    short_summary: Create the job that installs PostgreSQL and initializes the database.
+    cpu: 4
+    memory: 8
+    timeout: 30
+
+  - type: run_job
+    entity_label: init_database
+    short_summary: Install PostgreSQL and initialize the database.
+    long_summary: >
+      Downloads portable PostgreSQL binaries, initializes the data directory,
+      creates the cable_network database and cable_user role.
+
+  - type: start_application
+    name: Cable Network NOC
+    subdomain: cable-noc
+    script: cml/start_app.py
+    short_summary: Start the Cable Network monitoring application
+    long_summary: >
+      Launches the FastAPI backend and serves the frontend on port 8100.
+      Includes background data generation, tiered data retention,
+      multi-layer network maps, and optional Claude AI integration.
+    cpu: 4
+    memory: 16
+    environment_variables:
+      CDSW_APP_PORT:
+        default: "8100"
+        description: Application port (set automatically by CML)
+
+environment_variables:
+  DB_USER:
+    default: "cable_user"
+    description: PostgreSQL database user
+  DB_PASSWORD:
+    default: "cable_secure_pass_2024"
+    description: PostgreSQL database password
+  DB_HOST:
+    default: "localhost"
+    description: PostgreSQL host
+  DB_PORT:
+    default: "5432"
+    description: PostgreSQL port
+  DB_NAME:
+    default: "cable_network"
+    description: PostgreSQL database name
+  API_KEY:
+    default: "dev-api-key-change-me"
+    description: API key for backend authentication (sent as X-API-Key header)
+  ANTHROPIC_API_KEY:
+    default: ""
+    description: "(Optional) Anthropic API key for Claude AI analysis features"
+  WORKERS:
+    default: "4"
+    description: Number of uvicorn backend workers

@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a5f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0d1b2a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="towerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="signalGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#34d399;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.4" />
+    </linearGradient>
+    <linearGradient id="dataGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="64" fill="url(#bgGrad)"/>
+
+  <!-- Grid pattern (subtle) -->
+  <g opacity="0.1" stroke="#60a5fa" stroke-width="1">
+    <line x1="128" y1="0" x2="128" y2="512"/>
+    <line x1="256" y1="0" x2="256" y2="512"/>
+    <line x1="384" y1="0" x2="384" y2="512"/>
+    <line x1="0" y1="128" x2="512" y2="128"/>
+    <line x1="0" y1="256" x2="512" y2="256"/>
+    <line x1="0" y1="384" x2="512" y2="384"/>
+  </g>
+
+  <!-- Cell Tower -->
+  <g transform="translate(256, 280)">
+    <!-- Tower base/legs -->
+    <polygon points="-60,120 -20,0 20,0 60,120" fill="url(#towerGrad)" opacity="0.9"/>
+    <polygon points="-45,120 -15,30 15,30 45,120" fill="#1e3a5f" opacity="0.3"/>
+
+    <!-- Tower structure lines -->
+    <line x1="-35" y1="90" x2="35" y2="90" stroke="#93c5fd" stroke-width="3"/>
+    <line x1="-28" y1="60" x2="28" y2="60" stroke="#93c5fd" stroke-width="3"/>
+    <line x1="-20" y1="30" x2="20" y2="30" stroke="#93c5fd" stroke-width="3"/>
+
+    <!-- Antenna top -->
+    <rect x="-4" y="-60" width="8" height="60" fill="url(#towerGrad)"/>
+    <circle cx="0" cy="-70" r="12" fill="#60a5fa"/>
+    <circle cx="0" cy="-70" r="6" fill="#93c5fd"/>
+  </g>
+
+  <!-- Signal waves (left) -->
+  <g transform="translate(256, 210)" fill="none" stroke-width="4" stroke-linecap="round">
+    <path d="M-30,-20 Q-60,-20 -70,-50" stroke="url(#signalGrad)" opacity="0.9"/>
+    <path d="M-35,-10 Q-80,-10 -100,-55" stroke="url(#signalGrad)" opacity="0.7"/>
+    <path d="M-40,0 Q-100,0 -130,-60" stroke="url(#signalGrad)" opacity="0.5"/>
+  </g>
+
+  <!-- Signal waves (right) -->
+  <g transform="translate(256, 210)" fill="none" stroke-width="4" stroke-linecap="round">
+    <path d="M30,-20 Q60,-20 70,-50" stroke="url(#signalGrad)" opacity="0.9"/>
+    <path d="M35,-10 Q80,-10 100,-55" stroke="url(#signalGrad)" opacity="0.7"/>
+    <path d="M40,0 Q100,0 130,-60" stroke="url(#signalGrad)" opacity="0.5"/>
+  </g>
+
+  <!-- Data lake waves at bottom -->
+  <g transform="translate(0, 420)">
+    <ellipse cx="256" cy="40" rx="180" ry="35" fill="#8b5cf6" opacity="0.3"/>
+    <ellipse cx="256" cy="30" rx="150" ry="28" fill="#8b5cf6" opacity="0.4"/>
+    <ellipse cx="256" cy="20" rx="120" ry="20" fill="#a78bfa" opacity="0.5"/>
+  </g>
+
+  <!-- Data flow particles -->
+  <g fill="#34d399">
+    <circle cx="180" cy="320" r="4" opacity="0.8"/>
+    <circle cx="200" cy="350" r="3" opacity="0.6"/>
+    <circle cx="165" cy="370" r="5" opacity="0.7"/>
+    <circle cx="330" cy="330" r="4" opacity="0.8"/>
+    <circle cx="310" cy="360" r="3" opacity="0.6"/>
+    <circle cx="345" cy="380" r="5" opacity="0.7"/>
+  </g>
+
+  <!-- AI brain/chip indicator -->
+  <g transform="translate(400, 100)">
+    <rect x="-30" y="-30" width="60" height="60" rx="8" fill="#8b5cf6" opacity="0.9"/>
+    <circle cx="0" cy="0" r="18" fill="#c4b5fd" opacity="0.9"/>
+    <circle cx="0" cy="0" r="10" fill="#1e3a5f"/>
+    <circle cx="0" cy="0" r="5" fill="#34d399"/>
+    <!-- Connection lines -->
+    <line x1="-30" y1="0" x2="-40" y2="0" stroke="#8b5cf6" stroke-width="3"/>
+    <line x1="30" y1="0" x2="40" y2="0" stroke="#8b5cf6" stroke-width="3"/>
+    <line x1="0" y1="-30" x2="0" y2="-40" stroke="#8b5cf6" stroke-width="3"/>
+    <line x1="0" y1="30" x2="0" y2="40" stroke="#8b5cf6" stroke-width="3"/>
+  </g>
+
+  <!-- Network nodes -->
+  <g fill="#60a5fa">
+    <circle cx="100" cy="180" r="8"/>
+    <circle cx="80" cy="280" r="6"/>
+    <circle cx="420" cy="200" r="7"/>
+    <circle cx="440" cy="300" r="6"/>
+  </g>
+
+  <!-- Connection lines to tower -->
+  <g stroke="#60a5fa" stroke-width="2" opacity="0.4">
+    <line x1="100" y1="180" x2="220" y2="250"/>
+    <line x1="80" y1="280" x2="200" y2="300"/>
+    <line x1="420" y1="200" x2="290" y2="250"/>
+    <line x1="440" y1="300" x2="310" y2="310"/>
+  </g>
+</svg>

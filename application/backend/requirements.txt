@@ -1,0 +1,23 @@
+fastapi>=0.128.0
+uvicorn[standard]>=0.40.0
+pydantic>=2.12.5
+pydantic-settings>=2.12.0
+sqlalchemy>=2.0.45
+alembic>=1.17.2
+python-dateutil>=2.9.0
+faker>=40.1.0
+psycopg2-binary
+psycopg
+httpx>=0.28.1
+slowapi>=0.1.9
+ python-dotenv
+
+# Packet-capture analysis + edge anomaly flow
+scapy==2.5.0
+python-multipart>=0.0.12
+boto3>=1.34.0
+python-docx>=1.1.0
+
+# Tests (run in Docker; see README)
+pytest>=8.0.0
+pytest-asyncio>=0.24.0

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dell + Cloudera: Edge to Datacenter Data Lakehouse</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a2d4a 50%, #0d1f3c 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 40px;
+        }
+
+        .slide {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logos {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 28px;
+            letter-spacing: -0.5px;
+        }
+
+        .dell-logo {
+            color: #007DB8;
+        }
+
+        .plus {
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 300;
+        }
+
+        .cloudera-logo {
+            color: #F96702;
+        }
+
+        .title-section h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .title-section .subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+        }
+
+        .left-section {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .problem-statement {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .problem-statement h3 {
+            color: #ef4444;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .problem-statement p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .solution-box {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .solution-box h3 {
+            color: #22c55e;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .solution-list {
+            list-style: none;
+        }
+
+        .solution-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.5;
+        }
+
+        .solution-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .check-icon {
+            width: 20px;
+            height: 20px;
+            background: rgba(34, 197, 94, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .check-icon::after {
+            content: "✓";
+            color: #22c55e;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .architecture-diagram {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .architecture-diagram h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .arch-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .arch-flow::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 80px;
+            right: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #007DB8 0%, #F96702 50%, #22c55e 100%);
+            transform: translateY(-50%);
+            z-index: 0;
+            border-radius: 2px;
+        }
+
+        .arch-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            z-index: 1;
+        }
+
+        .node-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .edge-node .node-icon {
+            background: linear-gradient(135deg, #007DB8 0%, #005a8c 100%);
+        }
+
+        .platform-node .node-icon {
+            background: linear-gradient(135deg, #F96702 0%, #cc5200 100%);
+        }
+
+        .action-node .node-icon {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        }
+
+        .node-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+        }
+
+        .node-sublabel {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            max-width: 100px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #007DB8, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .right-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .stack-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .stack-section h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dell-section h3 {
+            color: #007DB8;
+        }
+
+        .cloudera-section h3 {
+            color: #F96702;
+        }
+
+        .stack-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .stack-item {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dell-section .stack-item {
+            border-color: rgba(0, 125, 184, 0.3);
+        }
+
+        .cloudera-section .stack-item {
+            border-color: rgba(249, 103, 2, 0.3);
+        }
+
+        .use-case {
+            background: linear-gradient(135deg, rgba(0, 125, 184, 0.1) 0%, rgba(249, 103, 2, 0.1) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .use-case h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 12px;
+        }
+
+        .use-case h4 {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .use-case p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .use-case-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .use-case-stat {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .use-case-stat .value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        .use-case-stat .label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+        }
+
+        .footer {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-stat {
+            text-align: right;
+        }
+
+        .footer-stat .value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .footer-stat .label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+        }
+
+        @media print {
+            body {
+                background: #0a1628;
+                padding: 0;
+            }
+            .slide {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <div class="title-section">
+                <h1>Breaking Down Data Silos</h1>
+                <p class="subtitle">Unified Data Lakehouse from Edge to Datacenter</p>
+            </div>
+            <div class="logos">
+                <span class="logo dell-logo">DELL</span>
+                <span class="plus">+</span>
+                <span class="logo cloudera-logo">Cloudera</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="left-section">
+                <div class="problem-statement">
+                    <h3>The Challenge</h3>
+                    <p>Enterprise data trapped in silos across edge devices, regional systems, and central datacenters creates blind spots, delays decision-making, and prevents AI/ML from delivering value at scale.</p>
+                </div>
+
+                <div class="solution-box">
+                    <h3>The Dell + Cloudera Solution</h3>
+                    <ul class="solution-list">
+                        <li>
+                            <span class="check-icon"></span>
+                            <span><strong>Unified Data Fabric</strong> - Single platform spanning edge to cloud with consistent governance and security</span>
+                        </li>
+                        <li>
+                            <span class="check-icon"></span>
+                            <span><strong>Real-Time Streaming</strong> - Kafka + Spark process millions of events/sec with sub-second latency</span>
+                        </li>
+                        <li>
+                            <span class="check-icon"></span>
+                            <span><strong>Open Data Lakehouse</strong> - Apache Iceberg enables SQL analytics on petabyte-scale data lakes</span>
+                        </li>
+                        <li>
+                            <span class="check-icon"></span>
+                            <span><strong>AI-Powered Automation</strong> - Cloudera ML deploys models at edge for autonomous decision-making</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="architecture-diagram">
+                    <h3>End-to-End Data Flow</h3>
+                    <div class="arch-flow">
+                        <div class="arch-node edge-node">
+                            <div class="node-icon">E</div>
+                            <span class="node-label">Edge</span>
+                            <span class="node-sublabel">Dell PowerEdge + IoT Sensors</span>
+                        </div>
+                        <div class="arch-node platform-node">
+                            <div class="node-icon">L</div>
+                            <span class="node-label">Lakehouse</span>
+                            <span class="node-sublabel">Cloudera Data Platform</span>
+                        </div>
+                        <div class="arch-node action-node">
+                            <div class="node-icon">A</div>
+                            <span class="node-label">Action</span>
+                            <span class="node-sublabel">AI/ML Automation</span>
+                        </div>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value">720K</div>
+                            <div class="metric-label">Events/Hour</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">&lt;5s</div>
+                            <div class="metric-label">Data Latency</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">97%</div>
+                            <div class="metric-label">Storage Savings</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-section">
+                <div class="stack-section dell-section">
+                    <h3>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="3" width="20" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><line x1="2" y1="9" x2="22" y2="9" stroke="currentColor" stroke-width="2"/></svg>
+                        Dell Infrastructure
+                    </h3>
+                    <div class="stack-items">
+                        <span class="stack-item">PowerEdge Servers</span>
+                        <span class="stack-item">PowerScale Storage</span>
+                        <span class="stack-item">VxRail HCI</span>
+                        <span class="stack-item">Dell Networking</span>
+                        <span class="stack-item">Edge Gateways</span>
+                        <span class="stack-item">APEX Cloud</span>
+                    </div>
+                </div>
+
+                <div class="stack-section cloudera-section">
+                    <h3>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                        Cloudera Data Services
+                    </h3>
+                    <div class="stack-items">
+                        <span class="stack-item">Apache NiFi</span>
+                        <span class="stack-item">Apache Kafka</span>
+                        <span class="stack-item">Apache Spark</span>
+                        <span class="stack-item">Apache Iceberg</span>
+                        <span class="stack-item">Apache Atlas</span>
+                        <span class="stack-item">Cloudera ML</span>
+                        <span class="stack-item">Data Warehouse</span>
+                        <span class="stack-item">Apache Airflow</span>
+                    </div>
+                </div>
+
+                <div class="use-case">
+                    <h3>Live Demo: Telecom NOC</h3>
+                    <h4>AI-Powered Self-Healing Network</h4>
+                    <p>Real-time monitoring of 1,000+ cell towers across 6 global regions with autonomous anomaly detection and remediation powered by LLM AI.</p>
+                    <div class="use-case-stats">
+                        <div class="use-case-stat">
+                            <div class="value">1,000+</div>
+                            <div class="label">Cell Towers</div>
+                        </div>
+                        <div class="use-case-stat">
+                            <div class="value">20+</div>
+                            <div class="label">KPI Metrics</div>
+                        </div>
+                        <div class="use-case-stat">
+                            <div class="value">34K</div>
+                            <div class="label">Daily Alerts</div>
+                        </div>
+                        <div class="use-case-stat">
+                            <div class="value">&lt;45s</div>
+                            <div class="label">Auto-Healing</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-left">
+                Dell Technologies + Cloudera Partnership | Data Lakehouse Solution
+            </div>
+            <div class="footer-right">
+                <div class="footer-stat">
+                    <div class="value">10x</div>
+                    <div class="label">Faster Insights</div>
+                </div>
+                <div class="footer-stat">
+                    <div class="value">60%</div>
+                    <div class="label">TCO Reduction</div>
+                </div>
+                <div class="footer-stat">
+                    <div class="value">100%</div>
+                    <div class="label">Data Governance</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

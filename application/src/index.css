@@ -1,0 +1,447 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Leaflet CSS fix for Vite */
+@layer base {
+  .leaflet-pane,
+  .leaflet-tile,
+  .leaflet-marker-icon,
+  .leaflet-marker-shadow,
+  .leaflet-tile-container,
+  .leaflet-pane > svg,
+  .leaflet-pane > canvas,
+  .leaflet-zoom-box,
+  .leaflet-image-layer,
+  .leaflet-layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .leaflet-container {
+    overflow: hidden;
+  }
+
+  .leaflet-marker-icon,
+  .leaflet-marker-shadow {
+    display: block;
+  }
+
+  /* Ensure SVG paths (CircleMarkers) are visible */
+  .leaflet-overlay-pane svg {
+    position: relative;
+    z-index: 400 !important;
+    display: block !important;
+  }
+
+  .leaflet-overlay-pane path {
+    pointer-events: all !important;
+    display: block !important;
+  }
+
+  .leaflet-overlay-pane {
+    z-index: 400 !important;
+  }
+
+  /* Ensure map container has proper dimensions */
+  #map {
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+  }
+
+  /* Force SVG visibility */
+  .leaflet-container svg,
+  .leaflet-container path,
+  .leaflet-container circle {
+    display: block !important;
+    visibility: visible !important;
+  }
+}
+
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Cloudera 2025 brand: Arial primary, Consolas for code (see tailwind.config.js) */
+body {
+  font-family: Arial, 'Helvetica Neue', Helvetica, 'Liberation Sans', sans-serif;
+  background: #F5F5FA;
+  color: #1A1A26;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code, pre, kbd {
+  font-family: Consolas, Menlo, Monaco, 'Liberation Mono', 'Courier New', monospace;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F5F5FA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C9CCD8;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A8AFB9;
+}
+
+/* ---------------------------------------------------------------------------
+ * Light-theme overrides for utilities that assumed a dark surface.
+ *
+ * The components were written for a dark palette where `text-white` meant
+ * "strong text on a dark card". On the Cloudera white template that text is
+ * brand indigo — except when it sits on a saturated background (buttons,
+ * status pills), where it must stay white.
+ * ------------------------------------------------------------------------- */
+.text-white {
+  color: #100045;
+}
+.hover\:text-white:hover {
+  color: #100045;
+}
+.group:hover .group-hover\:text-white {
+  color: #100045;
+}
+/* Exact-token matches only (so 10-40% tints like bg-purple-500/10 keep indigo text). */
+.text-white:is(
+  [class~="bg-blue-400"],
+  [class~="bg-blue-500"],
+  [class~="bg-blue-600"],
+  [class~="bg-blue-700"],
+  [class~="bg-sky-400"],
+  [class~="bg-sky-500"],
+  [class~="bg-sky-600"],
+  [class~="bg-sky-700"],
+  [class~="bg-indigo-400"],
+  [class~="bg-indigo-500"],
+  [class~="bg-indigo-600"],
+  [class~="bg-indigo-700"],
+  [class~="bg-purple-400"],
+  [class~="bg-purple-500"],
+  [class~="bg-purple-600"],
+  [class~="bg-purple-700"],
+  [class~="bg-violet-400"],
+  [class~="bg-violet-500"],
+  [class~="bg-violet-600"],
+  [class~="bg-violet-700"],
+  [class~="bg-orange-400"],
+  [class~="bg-orange-500"],
+  [class~="bg-orange-600"],
+  [class~="bg-orange-700"],
+  [class~="bg-red-400"],
+  [class~="bg-red-500"],
+  [class~="bg-red-600"],
+  [class~="bg-red-700"],
+  [class~="bg-rose-400"],
+  [class~="bg-rose-500"],
+  [class~="bg-rose-600"],
+  [class~="bg-rose-700"],
+  [class~="bg-pink-400"],
+  [class~="bg-pink-500"],
+  [class~="bg-pink-600"],
+  [class~="bg-pink-700"],
+  [class~="bg-green-400"],
+  [class~="bg-green-500"],
+  [class~="bg-green-600"],
+  [class~="bg-green-700"],
+  [class~="bg-emerald-400"],
+  [class~="bg-emerald-500"],
+  [class~="bg-emerald-600"],
+  [class~="bg-emerald-700"],
+  [class~="bg-teal-400"],
+  [class~="bg-teal-500"],
+  [class~="bg-teal-600"],
+  [class~="bg-teal-700"],
+  [class~="bg-cyan-400"],
+  [class~="bg-cyan-500"],
+  [class~="bg-cyan-600"],
+  [class~="bg-cyan-700"],
+  [class~="bg-amber-400"],
+  [class~="bg-amber-500"],
+  [class~="bg-amber-600"],
+  [class~="bg-amber-700"],
+  [class~="bg-yellow-400"],
+  [class~="bg-yellow-500"],
+  [class~="bg-yellow-600"],
+  [class~="bg-yellow-700"],
+  [class~="bg-lime-400"],
+  [class~="bg-lime-500"],
+  [class~="bg-lime-600"],
+  [class~="bg-lime-700"],
+  [class~="bg-fuchsia-400"],
+  [class~="bg-fuchsia-500"],
+  [class~="bg-fuchsia-600"],
+  [class~="bg-fuchsia-700"],
+  [class~="hover:bg-blue-500"],
+  [class~="hover:bg-blue-600"],
+  [class~="hover:bg-blue-700"],
+  [class~="hover:bg-sky-500"],
+  [class~="hover:bg-sky-600"],
+  [class~="hover:bg-sky-700"],
+  [class~="hover:bg-indigo-500"],
+  [class~="hover:bg-indigo-600"],
+  [class~="hover:bg-indigo-700"],
+  [class~="hover:bg-purple-500"],
+  [class~="hover:bg-purple-600"],
+  [class~="hover:bg-purple-700"],
+  [class~="hover:bg-violet-500"],
+  [class~="hover:bg-violet-600"],
+  [class~="hover:bg-violet-700"],
+  [class~="hover:bg-orange-500"],
+  [class~="hover:bg-orange-600"],
+  [class~="hover:bg-orange-700"],
+  [class~="hover:bg-red-500"],
+  [class~="hover:bg-red-600"],
+  [class~="hover:bg-red-700"],
+  [class~="hover:bg-rose-500"],
+  [class~="hover:bg-rose-600"],
+  [class~="hover:bg-rose-700"],
+  [class~="hover:bg-pink-500"],
+  [class~="hover:bg-pink-600"],
+  [class~="hover:bg-pink-700"],
+  [class~="hover:bg-green-500"],
+  [class~="hover:bg-green-600"],
+  [class~="hover:bg-green-700"],
+  [class~="hover:bg-emerald-500"],
+  [class~="hover:bg-emerald-600"],
+  [class~="hover:bg-emerald-700"],
+  [class~="hover:bg-teal-500"],
+  [class~="hover:bg-teal-600"],
+  [class~="hover:bg-teal-700"],
+  [class~="hover:bg-cyan-500"],
+  [class~="hover:bg-cyan-600"],
+  [class~="hover:bg-cyan-700"],
+  [class~="hover:bg-amber-500"],
+  [class~="hover:bg-amber-600"],
+  [class~="hover:bg-amber-700"],
+  [class~="hover:bg-yellow-500"],
+  [class~="hover:bg-yellow-600"],
+  [class~="hover:bg-yellow-700"],
+  [class~="hover:bg-lime-500"],
+  [class~="hover:bg-lime-600"],
+  [class~="hover:bg-lime-700"],
+  [class~="hover:bg-fuchsia-500"],
+  [class~="hover:bg-fuchsia-600"],
+  [class~="hover:bg-fuchsia-700"],
+  [class~="bg-black"],
+  [class~="bg-brand-indigo"],
+  [class~="bg-brand-indigo-deep"],
+  [class~="bg-brand-blue"],
+  [class~="bg-brand-orange"],
+  [class~="bg-brand-purple"],
+  [class~="bg-brand-ink"],
+  [class*="bg-gradient-to"]
+),
+:is(
+  [class~="bg-blue-400"],
+  [class~="bg-blue-500"],
+  [class~="bg-blue-600"],
+  [class~="bg-blue-700"],
+  [class~="bg-sky-400"],
+  [class~="bg-sky-500"],
+  [class~="bg-sky-600"],
+  [class~="bg-sky-700"],
+  [class~="bg-indigo-400"],
+  [class~="bg-indigo-500"],
+  [class~="bg-indigo-600"],
+  [class~="bg-indigo-700"],
+  [class~="bg-purple-400"],
+  [class~="bg-purple-500"],
+  [class~="bg-purple-600"],
+  [class~="bg-purple-700"],
+  [class~="bg-violet-400"],
+  [class~="bg-violet-500"],
+  [class~="bg-violet-600"],
+  [class~="bg-violet-700"],
+  [class~="bg-orange-400"],
+  [class~="bg-orange-500"],
+  [class~="bg-orange-600"],
+  [class~="bg-orange-700"],
+  [class~="bg-red-400"],
+  [class~="bg-red-500"],
+  [class~="bg-red-600"],
+  [class~="bg-red-700"],
+  [class~="bg-rose-400"],
+  [class~="bg-rose-500"],
+  [class~="bg-rose-600"],
+  [class~="bg-rose-700"],
+  [class~="bg-pink-400"],
+  [class~="bg-pink-500"],
+  [class~="bg-pink-600"],
+  [class~="bg-pink-700"],
+  [class~="bg-green-400"],
+  [class~="bg-green-500"],
+  [class~="bg-green-600"],
+  [class~="bg-green-700"],
+  [class~="bg-emerald-400"],
+  [class~="bg-emerald-500"],
+  [class~="bg-emerald-600"],
+  [class~="bg-emerald-700"],
+  [class~="bg-teal-400"],
+  [class~="bg-teal-500"],
+  [class~="bg-teal-600"],
+  [class~="bg-teal-700"],
+  [class~="bg-cyan-400"],
+  [class~="bg-cyan-500"],
+  [class~="bg-cyan-600"],
+  [class~="bg-cyan-700"],
+  [class~="bg-amber-400"],
+  [class~="bg-amber-500"],
+  [class~="bg-amber-600"],
+  [class~="bg-amber-700"],
+  [class~="bg-yellow-400"],
+  [class~="bg-yellow-500"],
+  [class~="bg-yellow-600"],
+  [class~="bg-yellow-700"],
+  [class~="bg-lime-400"],
+  [class~="bg-lime-500"],
+  [class~="bg-lime-600"],
+  [class~="bg-lime-700"],
+  [class~="bg-fuchsia-400"],
+  [class~="bg-fuchsia-500"],
+  [class~="bg-fuchsia-600"],
+  [class~="bg-fuchsia-700"],
+  [class~="hover:bg-blue-500"],
+  [class~="hover:bg-blue-600"],
+  [class~="hover:bg-blue-700"],
+  [class~="hover:bg-sky-500"],
+  [class~="hover:bg-sky-600"],
+  [class~="hover:bg-sky-700"],
+  [class~="hover:bg-indigo-500"],
+  [class~="hover:bg-indigo-600"],
+  [class~="hover:bg-indigo-700"],
+  [class~="hover:bg-purple-500"],
+  [class~="hover:bg-purple-600"],
+  [class~="hover:bg-purple-700"],
+  [class~="hover:bg-violet-500"],
+  [class~="hover:bg-violet-600"],
+  [class~="hover:bg-violet-700"],
+  [class~="hover:bg-orange-500"],
+  [class~="hover:bg-orange-600"],
+  [class~="hover:bg-orange-700"],
+  [class~="hover:bg-red-500"],
+  [class~="hover:bg-red-600"],
+  [class~="hover:bg-red-700"],
+  [class~="hover:bg-rose-500"],
+  [class~="hover:bg-rose-600"],
+  [class~="hover:bg-rose-700"],
+  [class~="hover:bg-pink-500"],
+  [class~="hover:bg-pink-600"],
+  [class~="hover:bg-pink-700"],
+  [class~="hover:bg-green-500"],
+  [class~="hover:bg-green-600"],
+  [class~="hover:bg-green-700"],
+  [class~="hover:bg-emerald-500"],
+  [class~="hover:bg-emerald-600"],
+  [class~="hover:bg-emerald-700"],
+  [class~="hover:bg-teal-500"],
+  [class~="hover:bg-teal-600"],
+  [class~="hover:bg-teal-700"],
+  [class~="hover:bg-cyan-500"],
+  [class~="hover:bg-cyan-600"],
+  [class~="hover:bg-cyan-700"],
+  [class~="hover:bg-amber-500"],
+  [class~="hover:bg-amber-600"],
+  [class~="hover:bg-amber-700"],
+  [class~="hover:bg-yellow-500"],
+  [class~="hover:bg-yellow-600"],
+  [class~="hover:bg-yellow-700"],
+  [class~="hover:bg-lime-500"],
+  [class~="hover:bg-lime-600"],
+  [class~="hover:bg-lime-700"],
+  [class~="hover:bg-fuchsia-500"],
+  [class~="hover:bg-fuchsia-600"],
+  [class~="hover:bg-fuchsia-700"],
+  [class~="bg-black"],
+  [class~="bg-brand-indigo"],
+  [class~="bg-brand-indigo-deep"],
+  [class~="bg-brand-blue"],
+  [class~="bg-brand-orange"],
+  [class~="bg-brand-purple"],
+  [class~="bg-brand-ink"],
+  [class*="bg-gradient-to"]
+) .text-white {
+  color: #ffffff;
+}
+
+/* Muted-text shades that remap to border grays on the light scale */
+.text-gray-600, .text-slate-600, .text-zinc-600 {
+  color: #8A90A0;
+}
+.text-gray-700, .text-slate-700 {
+  color: #6F7686;
+}
+.placeholder-gray-500::placeholder, .placeholder-gray-400::placeholder {
+  color: #9AA0AE;
+}
+
+
+/* Light tints (*-100 / *-50) used as text on the old dark surfaces -> readable dark text (exact tokens only) */
+[class~="text-gray-100"] { color: #3B3F52; }
+[class~="text-purple-100/80"] { color: #2B1D86; }
+
+/* ---------------------------------------------------------------------------
+ * Form fields.
+ *
+ * The dark theme styled inputs/selects/textareas with bg-gray-700, which the
+ * brand remap turns into a pale lavender — too close to the white cards they
+ * sit on, so the field and its text read as low-contrast. Give every text
+ * field a clean white ground, a solid border for definition, dark value text,
+ * and a readable (not washed-out) placeholder. Uses !important because these
+ * override the per-element Tailwind utility classes already on the fields.
+ * Range/checkbox/radio/color inputs keep their own styling.
+ * ------------------------------------------------------------------------- */
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="file"]),
+select,
+textarea {
+  background-color: #ffffff !important;
+  color: #1A1A26 !important;
+  border-color: #B8BCCC !important;
+}
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):not([type="color"])::placeholder,
+textarea::placeholder {
+  color: #6F7686 !important;
+  opacity: 1;
+}
+select option {
+  background-color: #ffffff;
+  color: #1A1A26;
+}
+/* Keep the focus affordance visible on white fields. */
+input:focus, select:focus, textarea:focus {
+  border-color: #5555F9 !important;
+}
+
+/* Leaflet chrome on a light basemap */
+.leaflet-container {
+  background: #EDEDF5;
+  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: #ffffff;
+  color: #1A1A26;
+  box-shadow: 0 2px 10px rgba(16, 0, 69, 0.15);
+}
+
+/* Recharts text on white */
+.recharts-text, .recharts-legend-item-text {
+  fill: #5B6170;
+  color: #5B6170 !important;
+}
+.recharts-cartesian-grid line {
+  stroke: #E6E7EF;
+}
